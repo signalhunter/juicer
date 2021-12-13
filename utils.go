@@ -21,6 +21,7 @@ func ReadFile(path string) ([]string, error) {
 }
 
 func WriteResults(path string, recv chan string) error {
+	dedup := make(map[string]bool)
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -29,8 +30,12 @@ func WriteResults(path string, recv chan string) error {
 
 	writer := bufio.NewWriter(file)
 	for d := range recv {
-		writer.WriteString(d + "\n")
+		id := d[len(d)-11:]
+		if !dedup[id] {
+			dedup[id] = true
+			writer.WriteString(id + "\n")
+		}
 	}
-	defer writer.Flush()
+	writer.Flush()
 	return nil
 }

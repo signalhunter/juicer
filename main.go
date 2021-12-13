@@ -67,5 +67,5 @@ func main() {
 	}
 
 	wg.Wait()
-	defer close(recv)
+	close(recv)
 }
