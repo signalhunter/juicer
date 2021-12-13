@@ -31,6 +31,6 @@ func WriteResults(path string, recv chan string) error {
 	for d := range recv {
 		writer.WriteString(d + "\n")
 	}
-	defer writer.Flush()
+	writer.Flush()
 	return nil
 }
