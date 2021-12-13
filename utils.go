@@ -20,7 +20,7 @@ func ReadFile(path string) ([]string, error) {
 	return data, nil
 }
 
-func WriteResults(path string, recv chan string) error {
+func WriteResults(path string, recv chan string, done chan bool) error {
 	dedup := make(map[string]bool)
 	file, err := os.Create(path)
 	if err != nil {
@@ -37,5 +37,6 @@ func WriteResults(path string, recv chan string) error {
 		}
 	}
 	writer.Flush()
+	done <- true
 	return nil
 }
