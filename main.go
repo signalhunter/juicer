@@ -41,10 +41,11 @@ func main() {
 
 	var wg sync.WaitGroup
 	recv := make(chan string)
+	done := make(chan bool)
 	pool := make(chan struct{}, *workers)
 
 	go func() {
-		err := WriteResults(*outfile, recv)
+		err := WriteResults(*outfile, recv, done)
 		if err != nil {
 			log.Fatalln("Error creating output file:", err)
 		}
@@ -68,4 +69,5 @@ func main() {
 
 	wg.Wait()
 	close(recv)
+	<-done
 }

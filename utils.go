@@ -20,7 +20,7 @@ func ReadFile(path string) ([]string, error) {
 	return data, nil
 }
 
-func WriteResults(path string, recv chan string) error {
+func WriteResults(path string, recv chan string, done chan bool) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -32,5 +32,6 @@ func WriteResults(path string, recv chan string) error {
 		writer.WriteString(d + "\n")
 	}
 	writer.Flush()
+	done <- true
 	return nil
 }
