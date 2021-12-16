@@ -15,7 +15,10 @@ func ReadFile(path string) ([]string, error) {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		data = append(data, scanner.Text())
+		txt := scanner.Text()
+		if len(txt) > 0 && txt[0] != '#' {
+			data = append(data, txt)
+		}
 	}
 	return data, nil
 }
